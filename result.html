@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portfolio Reviewer - Results</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <div class="nav-brand">
+        <div class="logo-circle">PR</div>
+        <span class="logo-text">Portfolio Reviewer</span>
+      </div>
+      <ul class="nav-links">
+        <li><a href="home.html" class="nav-link">Home</a></li>
+        <li><a href="analyze.html" class="nav-link">Analyze</a></li>
+        <li><a href="result.html" class="nav-link active">Result</a></li>
+        <li><a href="profile.html" class="nav-link">Profile</a></li>
+        <li><button class="logout-btn" id="logoutBtn">Logout</button></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- MAIN CONTENT -->
+  <div class="page-section">
+    <div class="container">
+      <h1 class="section-title">Your Analysis Results</h1>
+
+      <div id="resultContainer" class="hidden">
+        <!-- Portfolio Info -->
+        <div class="card mb-24">
+          <div class="card-title">Portfolio Information</div>
+          <table>
+            <tr>
+              <th>Property</th>
+              <th>Value</th>
+            </tr>
+            <tr>
+              <td>Portfolio Name</td>
+              <td id="resultName">-</td>
+            </tr>
+            <tr>
+              <td>URL</td>
+              <td><a id="resultUrl" href="#" target="_blank">View Portfolio</a></td>
+            </tr>
+            <tr>
+              <td>Analysis Date</td>
+              <td id="resultDate">-</td>
+            </tr>
+          </table>
+        </div>
+
+        <!-- Score Display -->
+        <div class="score-display mb-24">
+          <div class="score-number" id="scoreNumber">0</div>
+          <div class="score-label">Out of 100</div>
+        </div>
+
+        <!-- Score Breakdown -->
+        <div class="card mb-24">
+          <div class="card-title">Score Breakdown</div>
+
+          <div class="breakdown-item">
+            <div class="breakdown-label">
+              <span>Number of Projects</span>
+              <span id="breakdown-projects">0%</span>
+            </div>
+            <div class="breakdown-bar">
+              <div class="breakdown-fill" id="fill-projects" style="width: 0%"></div>
+            </div>
+          </div>
+
+          <div class="breakdown-item">
+            <div class="breakdown-label">
+              <span>Tech Stack Variety</span>
+              <span id="breakdown-stack">0%</span>
+            </div>
+            <div class="breakdown-bar">
+              <div class="breakdown-fill" id="fill-stack" style="width: 0%"></div>
+            </div>
+          </div>
+
+          <div class="breakdown-item">
+            <div class="breakdown-label">
+              <span>Responsive Design</span>
+              <span id="breakdown-responsive">0%</span>
+            </div>
+            <div class="breakdown-bar">
+              <div class="breakdown-fill" id="fill-responsive" style="width: 0%"></div>
+            </div>
+          </div>
+
+          <div class="breakdown-item">
+            <div class="breakdown-label">
+              <span>Live Demos</span>
+              <span id="breakdown-demos">0%</span>
+            </div>
+            <div class="breakdown-bar">
+              <div class="breakdown-fill" id="fill-demos" style="width: 0%"></div>
+            </div>
+          </div>
+
+          <div class="breakdown-item">
+            <div class="breakdown-label">
+              <span>Documentation</span>
+              <span id="breakdown-docs">0%</span>
+            </div>
+            <div class="breakdown-bar">
+              <div class="breakdown-fill" id="fill-docs" style="width: 0%"></div>
+            </div>
+          </div>
+
+          <div class="breakdown-item">
+            <div class="breakdown-label">
+              <span>Design & Polish</span>
+              <span id="breakdown-design">0%</span>
+            </div>
+            <div class="breakdown-bar">
+              <div class="breakdown-fill" id="fill-design" style="width: 0%"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Suggestions -->
+        <div class="card mb-24">
+          <div class="card-title">Suggestions for Improvement</div>
+          <ul class="suggestions-list" id="suggestionsList">
+            <li>No suggestions</li>
+          </ul>
+        </div>
+
+        <!-- Action Buttons -->
+        <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+          <a href="analyze.html" class="btn">← Analyze Again</a>
+          <a href="profile.html" class="btn btn-secondary">View History</a>
+        </div>
+      </div>
+
+      <div id="noResultContainer" class="card text-center">
+        <p class="text-muted">No analysis results yet. Go to the <a href="analyze.html">Analyze page</a> to get started.</p>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+  <script>
+    // Check auth
+    if (!localStorage.getItem('isLoggedIn')) {
+      window.location.href = 'login.html';
+    }
+
+    // Mark active nav
+    document.querySelectorAll('.nav-link').forEach(link => {
+      link.classList.remove('active');
+    });
+    document.querySelector('a[href="result.html"]').classList.add('active');
+
+    // Logout
+    document.getElementById('logoutBtn').addEventListener('click', function() {
+      localStorage.removeItem('isLoggedIn');
+      localStorage.removeItem('currentUser');
+      window.location.href = 'login.html';
+    });
+
+    // Load result
+    const lastResult = JSON.parse(localStorage.getItem('lastResult'));
+
+    if (lastResult) {
+      document.getElementById('resultContainer').classList.remove('hidden');
+      document.getElementById('noResultContainer').classList.add('hidden');
+
+      // Display info
+      document.getElementById('resultName').textContent = lastResult.name;
+      document.getElementById('resultUrl').href = lastResult.url;
+      document.getElementById('resultDate').textContent = lastResult.timestamp;
+
+      // Display score
+      document.getElementById('scoreNumber').textContent = lastResult.score;
+
+      // Calculate percentages
+      const maxPoints = {
+        projects: 20,
+        stack: 20,
+        responsive: 15,
+        demos: 15,
+        docs: 15,
+        design: 15
+      };
+
+      // Calculate scores for each metric
+      const breakdown = calculateBreakdown({
+        projects: lastResult.projects,
+        techCount: lastResult.techStack.split(',').length,
+        responsive: lastResult.responsive,
+        liveDemos: lastResult.liveDemos,
+        docs: lastResult.documentation,
+        designRating: parseInt(lastResult.designRating)
+      });
+
+      // Display breakdown
+      document.getElementById('breakdown-projects').textContent = Math.round((breakdown.projects / maxPoints.projects) * 100) + '%';
+      document.getElementById('fill-projects').style.width = (breakdown.projects / maxPoints.projects * 100) + '%';
+
+      document.getElementById('breakdown-stack').textContent = Math.round((breakdown.stack / maxPoints.stack) * 100) + '%';
+      document.getElementById('fill-stack').style.width = (breakdown.stack / maxPoints.stack * 100) + '%';
+
+      document.getElementById('breakdown-responsive').textContent = breakdown.responsive === 15 ? '100%' : '0%';
+      document.getElementById('fill-responsive').style.width = (breakdown.responsive === 15 ? 100 : 0) + '%';
+
+      document.getElementById('breakdown-demos').textContent = breakdown.demos === 15 ? '100%' : '0%';
+      document.getElementById('fill-demos').style.width = (breakdown.demos === 15 ? 100 : 0) + '%';
+
+      document.getElementById('breakdown-docs').textContent = Math.round((breakdown.docs / maxPoints.docs) * 100) + '%';
+      document.getElementById('fill-docs').style.width = (breakdown.docs / maxPoints.docs * 100) + '%';
+
+      document.getElementById('breakdown-design').textContent = Math.round((breakdown.design / maxPoints.design) * 100) + '%';
+      document.getElementById('fill-design').style.width = (breakdown.design / maxPoints.design * 100) + '%';
+
+      // Display suggestions
+      const suggestionsList = document.getElementById('suggestionsList');
+      suggestionsList.innerHTML = '';
+      if (lastResult.suggestions && lastResult.suggestions.length > 0) {
+        lastResult.suggestions.forEach(suggestion => {
+          const li = document.createElement('li');
+          li.textContent = suggestion;
+          suggestionsList.appendChild(li);
+        });
+      } else {
+        const li = document.createElement('li');
+        li.textContent = 'Excellent portfolio! Keep improving.';
+        suggestionsList.appendChild(li);
+      }
+    } else {
+      document.getElementById('resultContainer').classList.add('hidden');
+      document.getElementById('noResultContainer').classList.remove('hidden');
+    }
+  </script>
+</body>
+</html>

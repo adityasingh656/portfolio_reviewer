@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portfolio Reviewer - Home</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <div class="nav-brand">
+        <div class="logo-circle">PR</div>
+        <span class="logo-text">Portfolio Reviewer</span>
+      </div>
+      <ul class="nav-links">
+        <li><a href="home.html" class="nav-link active">Home</a></li>
+        <li><a href="analyze.html" class="nav-link">Analyze</a></li>
+        <li><a href="result.html" class="nav-link">Result</a></li>
+        <li><a href="profile.html" class="nav-link">Profile</a></li>
+        <li><button class="logout-btn" id="logoutBtn">Logout</button></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- MAIN CONTENT -->
+  <div class="page-section">
+    <div class="container">
+      <h1 class="section-title">Welcome, <span id="userName">User</span>! 👋</h1>
+
+      <div class="welcome-text">
+        Get instant feedback on your portfolio and improve your chances of landing that dream job.
+      </div>
+
+      <div class="grid">
+        <!-- ANALYZE CARD -->
+        <div class="card">
+          <div class="card-title">📊 Analyze Your Portfolio</div>
+          <p>Enter your portfolio details and get a comprehensive score with actionable suggestions for improvement.</p>
+          <a href="analyze.html" class="btn btn-full" style="margin-top: 16px; display: inline-block; text-align: center; text-decoration: none;">
+            Start Analysis →
+          </a>
+        </div>
+
+        <!-- RESULT CARD -->
+        <div class="card">
+          <div class="card-title">📈 View Your Results</div>
+          <p>See your latest portfolio analysis with detailed breakdown and suggestions for each metric.</p>
+          <a href="result.html" class="btn btn-full" style="margin-top: 16px; display: inline-block; text-align: center; text-decoration: none;">
+            View Results →
+          </a>
+        </div>
+
+        <!-- PROFILE CARD -->
+        <div class="card">
+          <div class="card-title">👤 Your Profile</div>
+          <p>View your profile information and see your analysis history with past scores and insights.</p>
+          <a href="profile.html" class="btn btn-full" style="margin-top: 16px; display: inline-block; text-align: center; text-decoration: none;">
+            Go to Profile →
+          </a>
+        </div>
+      </div>
+
+      <div class="card mt-24">
+        <div class="card-title">ℹ️ How It Works</div>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px;">
+          <div>
+            <strong style="color: #0891B2;">Step 1:</strong> Fill the form with your portfolio details
+          </div>
+          <div>
+            <strong style="color: #0891B2;">Step 2:</strong> Our algorithm scores 6 key metrics
+          </div>
+          <div>
+            <strong style="color: #0891B2;">Step 3:</strong> Get personalized suggestions to improve
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+  <script>
+    // Check if user is logged in
+    if (!localStorage.getItem('isLoggedIn')) {
+      window.location.href = 'login.html';
+    }
+
+    // Display user name
+    document.getElementById('userName').textContent = localStorage.getItem('currentUser') || 'User';
+
+    // Logout button
+    document.getElementById('logoutBtn').addEventListener('click', function() {
+      localStorage.removeItem('isLoggedIn');
+      localStorage.removeItem('currentUser');
+      window.location.href = 'login.html';
+    });
+
+    // Mark active nav link
+    document.querySelectorAll('.nav-link').forEach(link => {
+      link.classList.remove('active');
+    });
+    document.querySelector('a[href="home.html"]').classList.add('active');
+  </script>
+</body>
+</html>

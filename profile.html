@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portfolio Reviewer - Profile</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .profile-header {
+      background: linear-gradient(135deg, #0891B2, #0E7490);
+      color: #fff;
+      padding: 40px;
+      border-radius: 8px;
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    .profile-pic-container {
+      margin-bottom: 20px;
+    }
+
+    .profile-pic {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      border: 4px solid #fff;
+      object-fit: cover;
+      margin: 0 auto;
+      display: block;
+      box-shadow: 0 4px 12px rgba(0,0,0,.2);
+    }
+
+    .profile-name {
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .profile-email {
+      font-size: 14px;
+      opacity: 0.9;
+      margin-bottom: 16px;
+    }
+
+    .profile-stats {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      margin-top: 20px;
+      padding-top: 20px;
+      border-top: 1px solid rgba(255,255,255,.2);
+    }
+
+    .stat {
+      text-align: center;
+    }
+
+    .stat-number {
+      font-size: 24px;
+      font-weight: 700;
+    }
+
+    .stat-label {
+      font-size: 12px;
+      opacity: 0.8;
+    }
+
+    .section-box {
+      background: #fff;
+      border-radius: 8px;
+      border: 1px solid #E5E7EB;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+
+    .section-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: #0891B2;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .bio-text {
+      color: #6B7280;
+      line-height: 1.6;
+      font-size: 14px;
+      font-style: italic;
+    }
+
+    .social-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .social-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 14px;
+      background: #F3F4F6;
+      border: 1px solid #E5E7EB;
+      border-radius: 4px;
+      text-decoration: none;
+      color: #0891B2;
+      font-size: 13px;
+      font-weight: 500;
+      transition: all 0.2s;
+    }
+
+    .social-link:hover {
+      background: #0891B2;
+      color: #fff;
+      border-color: #0891B2;
+    }
+
+    .edit-profile-btn {
+      background: #0891B2;
+      color: #fff;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+      transition: background 0.2s;
+    }
+
+    .edit-profile-btn:hover {
+      background: #0E7490;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,.4);
+    }
+
+    .modal-content {
+      background-color: #fff;
+      margin: 5% auto;
+      padding: 24px;
+      border: 1px solid #E5E7EB;
+      border-radius: 8px;
+      width: 90%;
+      max-width: 500px;
+    }
+
+    .modal-close {
+      color: #aaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .modal-close:hover {
+      color: #000;
+    }
+
+    .modal-title {
+      font-size: 20px;
+      font-weight: 600;
+      color: #0F172A;
+      margin-bottom: 16px;
+    }
+
+    .form-group {
+      margin-bottom: 12px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 4px;
+      font-size: 13px;
+      font-weight: 500;
+      color: #111827;
+    }
+
+    .form-group input,
+    .form-group textarea {
+      width: 100%;
+      padding: 8px 10px;
+      border: 1px solid #E5E7EB;
+      border-radius: 4px;
+      font-size: 13px;
+      font-family: inherit;
+      box-sizing: border-box;
+    }
+
+    .form-group textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: #0891B2;
+      box-shadow: 0 0 0 2px #38BDF8;
+    }
+
+    .modal-buttons {
+      display: flex;
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .modal-buttons button {
+      flex: 1;
+      padding: 8px 16px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+      transition: all 0.2s;
+    }
+
+    .btn-save {
+      background: #0891B2;
+      color: #fff;
+    }
+
+    .btn-save:hover {
+      background: #0E7490;
+    }
+
+    .btn-cancel {
+      background: #E5E7EB;
+      color: #111827;
+    }
+
+    .btn-cancel:hover {
+      background: #D1D5DB;
+    }
+
+    .achievement {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 60px;
+      height: 60px;
+      border-radius: 8px;
+      background: #F3F4F6;
+      font-size: 28px;
+      margin: 8px;
+    }
+
+    .achievements {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: center;
+    }
+
+    @media (max-width: 768px) {
+      .profile-header {
+        padding: 24px;
+      }
+
+      .profile-stats {
+        gap: 15px;
+      }
+
+      .modal-content {
+        width: 95%;
+        margin: 20% auto;
+      }
+
+      .profile-pic {
+        width: 80px;
+        height: 80px;
+      }
+
+      .profile-name {
+        font-size: 22px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <div class="nav-brand">
+        <div class="logo-circle">PR</div>
+        <span class="logo-text">Portfolio Reviewer</span>
+      </div>
+      <ul class="nav-links">
+        <li><a href="home.html" class="nav-link">Home</a></li>
+        <li><a href="analyze.html" class="nav-link">Analyze</a></li>
+        <li><a href="result.html" class="nav-link">Result</a></li>
+        <li><a href="profile.html" class="nav-link active">Profile</a></li>
+        <li><button class="logout-btn" id="logoutBtn">Logout</button></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- MAIN CONTENT -->
+  <div class="page-section">
+    <div class="container">
+      <!-- PROFILE HEADER -->
+      <div class="profile-header">
+        <div class="profile-pic-container">
+          <img id="displayProfilePic" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Ccircle cx='60' cy='60' r='60' fill='%2338BDF8'/%3E%3Ctext x='50%' y='50%' text-anchor='middle' dy='.3em' font-size='48' font-weight='bold' fill='%230F172A' font-family='Arial'%3EA%3C/text%3E%3C/svg%3E" alt="Profile Picture" class="profile-pic">
+        </div>
+        <div class="profile-name" id="displayName">User Profile</div>
+        <div class="profile-email" id="displayEmail">aditya@aktu</div>
+
+        <div class="profile-stats">
+          <div class="stat">
+            <div class="stat-number" id="totalAnalyses">0</div>
+            <div class="stat-label">Analyses</div>
+          </div>
+          <div class="stat">
+            <div class="stat-number" id="avgScore">0</div>
+            <div class="stat-label">Avg Score</div>
+          </div>
+          <div class="stat">
+            <div class="stat-number" id="memberDays">0</div>
+            <div class="stat-label">Days Member</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- BIO SECTION -->
+      <div class="section-box">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <div class="section-title">📝 Bio</div>
+          <button class="edit-profile-btn" onclick="openEditModal()">Edit Profile</button>
+        </div>
+        <div class="bio-text" id="displayBio">
+          "Tell us about yourself. Share your journey, interests, and what drives you!"
+        </div>
+      </div>
+
+      <!-- SOCIAL MEDIA SECTION -->
+      <div class="section-box">
+        <div class="section-title">🔗 Social Media</div>
+        <div class="social-links" id="socialLinksContainer">
+          <span class="text-muted">No social links added yet. Edit profile to add them!</span>
+        </div>
+      </div>
+
+      <!-- ACHIEVEMENTS SECTION -->
+      <div class="section-box">
+        <div class="section-title">🏆 Achievements</div>
+        <div class="achievements" id="achievementsContainer">
+          <div class="achievement" title="Portfolio Analyzer">🎯</div>
+          <div class="achievement" title="First Analysis">✨</div>
+          <div class="achievement" title="High Scorer">⭐</div>
+        </div>
+      </div>
+
+      <!-- ANALYSIS HISTORY SECTION -->
+      <div class="section-box">
+        <div class="section-title">📊 Analysis History</div>
+        <div id="historyContainer">
+          <p class="text-muted">No analysis history yet. Start by going to <a href="analyze.html">Analyze page</a>.</p>
+        </div>
+      </div>
+
+      <!-- ACTION BUTTONS -->
+      <div style="display: flex; gap: 12px; flex-wrap: wrap; margin-top: 24px;">
+        <a href="home.html" class="btn">← Back to Home</a>
+        <a href="analyze.html" class="btn btn-secondary">New Analysis</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- EDIT PROFILE MODAL -->
+  <div id="editModal" class="modal">
+    <div class="modal-content">
+      <span class="modal-close" onclick="closeEditModal()">&times;</span>
+      <div class="modal-title">Edit Your Profile</div>
+
+      <form id="editForm">
+        <!-- Full Name -->
+        <div class="form-group">
+          <label for="editName">Full Name</label>
+          <input type="text" id="editName" placeholder="Your full name" required>
+        </div>
+
+        <!-- Bio -->
+        <div class="form-group">
+          <label for="editBio">Bio (about you)</label>
+          <textarea id="editBio" placeholder="Tell us about yourself..."></textarea>
+        </div>
+
+        <!-- GitHub -->
+        <div class="form-group">
+          <label for="editGitHub">GitHub Profile URL</label>
+          <input type="url" id="editGitHub" placeholder="https://github.com/username">
+        </div>
+
+        <!-- LinkedIn -->
+        <div class="form-group">
+          <label for="editLinkedIn">LinkedIn Profile URL</label>
+          <input type="url" id="editLinkedIn" placeholder="https://linkedin.com/in/username">
+        </div>
+
+        <!-- Twitter -->
+        <div class="form-group">
+          <label for="editTwitter">Twitter Profile URL</label>
+          <input type="url" id="editTwitter" placeholder="https://twitter.com/username">
+        </div>
+
+        <!-- Portfolio Website -->
+        <div class="form-group">
+          <label for="editPortfolio">Portfolio Website URL</label>
+          <input type="url" id="editPortfolio" placeholder="https://yourportfolio.com">
+        </div>
+
+        <!-- Profile Picture URL -->
+        <div class="form-group">
+          <label for="editProfilePic">Profile Picture URL</label>
+          <input type="url" id="editProfilePic" placeholder="https://example.com/your-pic.jpg">
+          <small style="color: #6B7280; margin-top: 4px; display: block;">
+            (Use direct image URL or data URI)
+          </small>
+        </div>
+
+        <!-- Buttons -->
+        <div class="modal-buttons">
+          <button type="button" class="btn-cancel" onclick="closeEditModal()">Cancel</button>
+          <button type="submit" class="btn-save">Save Changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+  <script>
+    // Check auth
+    if (!localStorage.getItem('isLoggedIn')) {
+      window.location.href = 'login.html';
+    }
+
+    // Mark active nav
+    document.querySelectorAll('.nav-link').forEach(link => {
+      link.classList.remove('active');
+    });
+    document.querySelector('a[href="profile.html"]').classList.add('active');
+
+    // Logout
+    document.getElementById('logoutBtn').addEventListener('click', function() {
+      localStorage.removeItem('isLoggedIn');
+      localStorage.removeItem('currentUser');
+      window.location.href = 'login.html';
+    });
+
+    // Load profile data
+    function loadProfile() {
+      const currentUser = localStorage.getItem('currentUser');
+      const profileData = JSON.parse(localStorage.getItem('profileData')) || {
+        name: currentUser.split('@')[0].charAt(0).toUpperCase() + currentUser.split('@')[0].slice(1),
+        bio: '"Tell us about yourself. Share your journey, interests, and what drives you!"',
+        github: '',
+        linkedin: '',
+        twitter: '',
+        portfolio: '',
+        profilePic: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"%3E%3Ccircle cx="60" cy="60" r="60" fill="%2338BDF8"/%3E%3Ctext x="50%25" y="50%25" text-anchor="middle" dy=".3em" font-size="48" font-weight="bold" fill="%230F172A" font-family="Arial"%3EA%3C/text%3E%3C/svg%3E'
+      };
+
+      // Display profile info
+      document.getElementById('displayName').textContent = profileData.name;
+      document.getElementById('displayEmail').textContent = currentUser;
+      document.getElementById('displayBio').textContent = profileData.bio;
+      document.getElementById('displayProfilePic').src = profileData.profilePic;
+
+      // Display stats
+      const history = JSON.parse(localStorage.getItem('analysisHistory')) || [];
+      document.getElementById('totalAnalyses').textContent = history.length;
+
+      if (history.length > 0) {
+        const avgScore = Math.round(history.reduce((sum, item) => sum + item.score, 0) / history.length);
+        document.getElementById('avgScore').textContent = avgScore;
+      }
+
+      const loginTime = localStorage.getItem('loginTime');
+      const memberDays = loginTime ? Math.floor((new Date() - new Date(loginTime)) / (1000 * 60 * 60 * 24)) : 0;
+      document.getElementById('memberDays').textContent = memberDays || 0;
+
+      // Display social links
+      displaySocialLinks(profileData);
+
+      // Display history
+      displayHistory(history);
+
+      // Load edit form
+      loadEditForm(profileData);
+    }
+
+    function displaySocialLinks(profileData) {
+      const container = document.getElementById('socialLinksContainer');
+      container.innerHTML = '';
+
+      const socialMedias = [
+        { name: 'GitHub', url: profileData.github, icon: '🐙' },
+        { name: 'LinkedIn', url: profileData.linkedin, icon: '💼' },
+        { name: 'Twitter', url: profileData.twitter, icon: '𝕏' },
+        { name: 'Portfolio', url: profileData.portfolio, icon: '🌐' }
+      ];
+
+      let hasLinks = false;
+      socialMedias.forEach(social => {
+        if (social.url) {
+          hasLinks = true;
+          const link = document.createElement('a');
+          link.href = social.url;
+          link.target = '_blank';
+          link.rel = 'noopener noreferrer';
+          link.className = 'social-link';
+          link.textContent = `${social.icon} ${social.name}`;
+          container.appendChild(link);
+        }
+      });
+
+      if (!hasLinks) {
+        container.innerHTML = '<span class="text-muted">No social links added yet. Edit profile to add them!</span>';
+      }
+    }
+
+    function displayHistory(history) {
+      const container = document.getElementById('historyContainer');
+
+      if (history.length > 0) {
+        let historyHTML = '<div style="overflow-x: auto;"><table><tr><th>Portfolio</th><th>Score</th><th>Date</th><th>Action</th></tr>';
+
+        history.slice(-5).reverse().forEach((item, index) => {
+          historyHTML += `
+            <tr>
+              <td>${item.name}</td>
+              <td><strong style="color: #0891B2;">${item.score}/100</strong></td>
+              <td>${item.timestamp}</td>
+              <td><button class="btn btn-secondary" style="padding: 4px 8px; font-size: 12px;" onclick="viewAnalysis(${history.length - 1 - index})">View</button></td>
+            </tr>
+          `;
+        });
+
+        historyHTML += '</table></div>';
+        container.innerHTML = historyHTML;
+      } else {
+        container.innerHTML = '<p class="text-muted">No analysis history yet. Start by going to <a href="analyze.html">Analyze page</a>.</p>';
+      }
+    }
+
+    function loadEditForm(profileData) {
+      document.getElementById('editName').value = profileData.name;
+      document.getElementById('editBio').value = profileData.bio;
+      document.getElementById('editGitHub').value = profileData.github || '';
+      document.getElementById('editLinkedIn').value = profileData.linkedin || '';
+      document.getElementById('editTwitter').value = profileData.twitter || '';
+      document.getElementById('editPortfolio').value = profileData.portfolio || '';
+      document.getElementById('editProfilePic').value = profileData.profilePic || '';
+    }
+
+    function openEditModal() {
+      document.getElementById('editModal').style.display = 'block';
+    }
+
+    function closeEditModal() {
+      document.getElementById('editModal').style.display = 'none';
+    }
+
+    document.getElementById('editForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const profileData = {
+        name: document.getElementById('editName').value,
+        bio: document.getElementById('editBio').value,
+        github: document.getElementById('editGitHub').value,
+        linkedin: document.getElementById('editLinkedIn').value,
+        twitter: document.getElementById('editTwitter').value,
+        portfolio: document.getElementById('editPortfolio').value,
+        profilePic: document.getElementById('editProfilePic').value || 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"%3E%3Ccircle cx="60" cy="60" r="60" fill="%2338BDF8"/%3E%3Ctext x="50%25" y="50%25" text-anchor="middle" dy=".3em" font-size="48" font-weight="bold" fill="%230F172A" font-family="Arial"%3EA%3C/text%3E%3C/svg%3E'
+      };
+
+      localStorage.setItem('profileData', JSON.stringify(profileData));
+      closeEditModal();
+      loadProfile();
+      alert('✅ Profile updated successfully!');
+    });
+
+    window.viewAnalysis = function(index) {
+      const history = JSON.parse(localStorage.getItem('analysisHistory')) || [];
+      const item = history[index];
+      localStorage.setItem('lastResult', JSON.stringify(item));
+      window.location.href = 'result.html';
+    };
+
+    window.closeEditModal = closeEditModal;
+
+    // Close modal when clicking outside
+    window.onclick = function(event) {
+      const modal = document.getElementById('editModal');
+      if (event.target == modal) {
+        modal.style.display = 'none';
+      }
+    };
+
+    // Load profile on page load
+    loadProfile();
+  </script>
+</body>
+</html>

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portfolio Reviewer - Login</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      background: linear-gradient(135deg, #0891B2 0%, #0F172A 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    }
+
+    .login-container {
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 10px 40px rgba(0,0,0,.15);
+      padding: 40px;
+      max-width: 400px;
+      width: 95%;
+    }
+
+    .login-header {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+
+    .login-logo {
+      width: 60px;
+      height: 60px;
+      margin: 0 auto 16px;
+      background: linear-gradient(135deg, #22C55E, #38BDF8);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .login-header h1 {
+      font-size: 24px;
+      color: #0F172A;
+      margin-bottom: 8px;
+    }
+
+    .login-header p {
+      color: #6B7280;
+      font-size: 14px;
+    }
+
+    .login-form {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid #E5E7EB;
+      border-radius: 4px;
+      font-size: 14px;
+      background: #F9FAFB;
+    }
+
+    .form-group input:focus {
+      outline: none;
+      border-color: #0891B2;
+      box-shadow: 0 0 0 2px #38BDF8;
+    }
+
+    .error-msg {
+      color: #DC2626;
+      font-size: 13px;
+      text-align: center;
+      min-height: 18px;
+    }
+
+    .btn {
+      padding: 11px 16px;
+      background: #0891B2;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .btn:hover {
+      background: #0E7490;
+    }
+
+    .login-footer {
+      text-align: center;
+      margin-top: 16px;
+      font-size: 13px;
+      color: #6B7280;
+    }
+
+    .demo-creds {
+      background: #F3F4F6;
+      border: 1px solid #E5E7EB;
+      padding: 12px;
+      border-radius: 4px;
+      margin-top: 16px;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .demo-creds strong {
+      color: #0891B2;
+    }
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    <div class="login-header">
+      <div class="login-logo">PR</div>
+      <h1>Portfolio Reviewer</h1>
+      <p>Analyze Your Portfolio Now</p>
+    </div>
+
+    <form class="login-form" id="loginForm">
+      <div class="form-group">
+        <label for="userid">User ID</label>
+        <input type="text" id="userid" placeholder="Enter your ID" autocomplete="off" required>
+      </div>
+
+      <div class="form-group">
+        <label for="userpass">Password</label>
+        <input type="password" id="userpass" placeholder="Enter password" autocomplete="off" required>
+      </div>
+
+      <div class="error-msg" id="errorMsg"></div>
+
+      <button type="submit" class="btn">Login</button>
+    </form>
+
+    <div class="demo-creds">
+      <strong>Demo Credentials:</strong><br>
+      ID: aditya@aktu<br>
+      Password: 12345
+    </div>
+
+    <div class="login-footer">
+      Student Project | AKTU BTech
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

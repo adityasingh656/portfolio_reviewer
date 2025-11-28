@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portfolio Reviewer - Analyze</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <div class="nav-brand">
+        <div class="logo-circle">PR</div>
+        <span class="logo-text">Portfolio Reviewer</span>
+      </div>
+      <ul class="nav-links">
+        <li><a href="home.html" class="nav-link">Home</a></li>
+        <li><a href="analyze.html" class="nav-link active">Analyze</a></li>
+        <li><a href="result.html" class="nav-link">Result</a></li>
+        <li><a href="profile.html" class="nav-link">Profile</a></li>
+        <li><button class="logout-btn" id="logoutBtn">Logout</button></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- MAIN CONTENT -->
+  <div class="page-section">
+    <div class="container">
+      <h1 class="section-title">Analyze Your Portfolio</h1>
+
+      <div class="card">
+        <form id="analyzeForm">
+          <!-- Portfolio Name -->
+          <div class="form-group">
+            <label for="portfolioName">Portfolio Title / Name</label>
+            <input type="text" id="portfolioName" placeholder="e.g., My Developer Portfolio" required>
+            <div class="error-text" id="err-portfolioName"></div>
+          </div>
+
+          <!-- Portfolio URL -->
+          <div class="form-group">
+            <label for="portfolioUrl">Portfolio URL</label>
+            <input type="url" id="portfolioUrl" placeholder="e.g., https://myportfolio.com" required>
+            <div class="error-text" id="err-portfolioUrl"></div>
+          </div>
+
+          <!-- Number of Projects -->
+          <div class="form-group">
+            <label for="numProjects">Number of Projects (0-20)</label>
+            <input type="number" id="numProjects" min="0" max="20" placeholder="7" required>
+            <div class="error-text" id="err-numProjects"></div>
+          </div>
+
+          <!-- Tech Stack -->
+          <div class="form-group">
+            <label for="techStack">Tech Stack (comma-separated)</label>
+            <input type="text" id="techStack" placeholder="e.g., HTML, CSS, JavaScript, React, Node.js" required>
+            <div class="error-text" id="err-techStack"></div>
+          </div>
+
+          <!-- Responsive -->
+          <div class="form-group">
+            <label for="responsive">Is your portfolio responsive/mobile-friendly?</label>
+            <select id="responsive" required>
+              <option value="">-- Select --</option>
+              <option value="yes">Yes</option>
+              <option value="no">No</option>
+            </select>
+            <div class="error-text" id="err-responsive"></div>
+          </div>
+
+          <!-- Live Demos -->
+          <div class="form-group">
+            <label for="liveDemos">Do you have live demo links?</label>
+            <select id="liveDemos" required>
+              <option value="">-- Select --</option>
+              <option value="yes">Yes</option>
+              <option value="no">No</option>
+            </select>
+            <div class="error-text" id="err-liveDemos"></div>
+          </div>
+
+          <!-- Documentation -->
+          <div class="form-group">
+            <label for="documentation">What is your code documentation level?</label>
+            <select id="documentation" required>
+              <option value="">-- Select --</option>
+              <option value="good">Good (README, comments, guides)</option>
+              <option value="partial">Partial (some README or comments)</option>
+              <option value="none">None</option>
+            </select>
+            <div class="error-text" id="err-documentation"></div>
+          </div>
+
+          <!-- Design Rating -->
+          <div class="form-group">
+            <label for="designRating">Design & Polish Rating (1-5 stars)</label>
+            <select id="designRating" required>
+              <option value="">-- Select --</option>
+              <option value="1">⭐ Basic (1 star)</option>
+              <option value="2">⭐⭐ Fair (2 stars)</option>
+              <option value="3">⭐⭐⭐ Good (3 stars)</option>
+              <option value="4">⭐⭐⭐⭐ Very Good (4 stars)</option>
+              <option value="5">⭐⭐⭐⭐⭐ Excellent (5 stars)</option>
+            </select>
+            <div class="error-text" id="err-designRating"></div>
+          </div>
+
+          <!-- Submit Button -->
+          <button type="submit" class="btn btn-full mt-24">Analyze My Portfolio 🚀</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+  <script>
+    // Check auth
+    if (!localStorage.getItem('isLoggedIn')) {
+      window.location.href = 'login.html';
+    }
+
+    // Mark active nav link
+    document.querySelectorAll('.nav-link').forEach(link => {
+      link.classList.remove('active');
+    });
+    document.querySelector('a[href="analyze.html"]').classList.add('active');
+
+    // Logout
+    document.getElementById('logoutBtn').addEventListener('click', function() {
+      localStorage.removeItem('isLoggedIn');
+      localStorage.removeItem('currentUser');
+      window.location.href = 'login.html';
+    });
+
+    // Form submission
+    document.getElementById('analyzeForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      // Get form values
+      const portfolioName = document.getElementById('portfolioName').value.trim();
+      const portfolioUrl = document.getElementById('portfolioUrl').value.trim();
+      const numProjects = parseInt(document.getElementById('numProjects').value);
+      const techStack = document.getElementById('techStack').value.trim();
+      const responsive = document.getElementById('responsive').value;
+      const liveDemos = document.getElementById('liveDemos').value;
+      const documentation = document.getElementById('documentation').value;
+      const designRating = parseInt(document.getElementById('designRating').value);
+
+      // Validate
+      let isValid = true;
+      const clearErrors = () => {
+        document.querySelectorAll('.error-text').forEach(el => el.textContent = '');
+      };
+      clearErrors();
+
+      if (!portfolioName) {
+        document.getElementById('err-portfolioName').textContent = 'Please enter portfolio name';
+        isValid = false;
+      }
+      if (!portfolioUrl) {
+        document.getElementById('err-portfolioUrl').textContent = 'Please enter valid portfolio URL';
+        isValid = false;
+      }
+      if (isNaN(numProjects) || numProjects < 0 || numProjects > 20) {
+        document.getElementById('err-numProjects').textContent = 'Please enter number between 0 and 20';
+        isValid = false;
+      }
+      if (!techStack) {
+        document.getElementById('err-techStack').textContent = 'Please enter at least one technology';
+        isValid = false;
+      }
+      if (!responsive) {
+        document.getElementById('err-responsive').textContent = 'Please select responsiveness';
+        isValid = false;
+      }
+      if (!liveDemos) {
+        document.getElementById('err-liveDemos').textContent = 'Please select if you have live demos';
+        isValid = false;
+      }
+      if (!documentation) {
+        document.getElementById('err-documentation').textContent = 'Please select documentation level';
+        isValid = false;
+      }
+      if (!designRating) {
+        document.getElementById('err-designRating').textContent = 'Please select design rating';
+        isValid = false;
+      }
+
+      if (!isValid) return;
+
+      // CALL SCORING FUNCTION FROM app.js
+      const score = calculateScore({
+        name: portfolioName,
+        url: portfolioUrl,
+        projects: numProjects,
+        techStack: techStack,
+        techStackArray: techStack.split(',').map(t => t.trim()),
+        responsive: responsive,
+        liveDemos: liveDemos,
+        docs: documentation,
+        designRating: designRating
+      });
+
+      // Generate suggestions
+      const suggestions = generateSuggestions({
+        projects: numProjects,
+        techCount: techStack.split(',').length,
+        responsive: responsive,
+        liveDemos: liveDemos,
+        docs: documentation,
+        designRating: designRating
+      });
+
+      // Save result
+      const result = {
+        name: portfolioName,
+        url: portfolioUrl,
+        score: score,
+        projects: numProjects,
+        techStack: techStack,
+        responsive: responsive,
+        liveDemos: liveDemos,
+        documentation: documentation,
+        designRating: designRating,
+        suggestions: suggestions,
+        timestamp: new Date().toLocaleString()
+      };
+
+      localStorage.setItem('lastResult', JSON.stringify(result));
+
+      // Add to history
+      let history = JSON.parse(localStorage.getItem('analysisHistory')) || [];
+      history.push(result);
+      localStorage.setItem('analysisHistory', JSON.stringify(history));
+
+      // Redirect
+      alert('Analysis complete! Redirecting to results...');
+      window.location.href = 'result.html';
+    });
+  </script>
+</body>
+</html>
